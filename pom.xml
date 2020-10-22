@@ -17,7 +17,7 @@
 	<properties>
 		<java.version>8</java.version>
 		<maven-compiler-plugin-version>3.6.1</maven-compiler-plugin-version>
-		//<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 	</properties>
 
 	<dependencies>
