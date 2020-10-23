@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-
 import com.example.demo.TestUtils;
 import com.example.demo.model.persistence.Cart;
 import com.example.demo.model.persistence.Item;
@@ -8,23 +7,43 @@ import com.example.demo.model.persistence.User;
 import com.example.demo.model.persistence.repositories.CartRepository;
 import com.example.demo.model.persistence.repositories.ItemRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
+import com.example.demo.model.requests.CreateUserRequest;
 import com.example.demo.model.requests.ModifyCartRequest;
+import com.jayway.jsonpath.JsonPath;
+import org.junit.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 
 import java.math.BigDecimal;
+import java.net.URI;
+import java.util.Optional;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+
 public class CartControllerTests {
 
     private CartController cartController;
@@ -66,10 +85,10 @@ public class CartControllerTests {
         ResponseEntity<Cart> response = cartController.addToCart(request);
 
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
+        Assert.assertEquals(200, response.getStatusCodeValue());
         Cart cart = response.getBody();
         assertNotNull(cart);
-        assertEquals(BigDecimal.valueOf(2.99), cart.getTotal());
+        Assert.assertEquals(BigDecimal.valueOf(2.99), cart.getTotal());
 
     }
 
@@ -82,7 +101,7 @@ public class CartControllerTests {
         ResponseEntity<Cart> response = cartController.addToCart(request);
 
         assertNotNull(response);
-        assertEquals(404, response.getStatusCodeValue());
+        Assert.assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
@@ -94,7 +113,7 @@ public class CartControllerTests {
         ResponseEntity<Cart> response = cartController.addToCart(request);
 
         assertNotNull(response);
-        assertEquals(404, response.getStatusCodeValue());
+        Assert.assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
@@ -106,7 +125,7 @@ public class CartControllerTests {
         request.setUsername("test");
         ResponseEntity<Cart> response = cartController.addToCart(request);
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
+        Assert.assertEquals(200, response.getStatusCodeValue());
 
         request = new ModifyCartRequest();
         request.setItemId(1L);
@@ -115,10 +134,10 @@ public class CartControllerTests {
         response = cartController.removeFromCart(request);
 
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
+        Assert.assertEquals(200, response.getStatusCodeValue());
         Cart cart = response.getBody();
         assertNotNull(cart);
-        assertEquals(BigDecimal.valueOf(2.99), cart.getTotal());
+        Assert.assertEquals(BigDecimal.valueOf(2.99), cart.getTotal());
 
     }
 
@@ -131,7 +150,7 @@ public class CartControllerTests {
         ResponseEntity<Cart> response = cartController.removeFromCart(request);
 
         assertNotNull(response);
-        assertEquals(404, response.getStatusCodeValue());
+        Assert.assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
@@ -143,6 +162,6 @@ public class CartControllerTests {
         ResponseEntity<Cart> response = cartController.removeFromCart(request);
 
         assertNotNull(response);
-        assertEquals(404, response.getStatusCodeValue());
+        Assert.assertEquals(404, response.getStatusCodeValue());
     }
 }
